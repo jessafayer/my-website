@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessa Fayer's Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FEF6FB;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .sidebar {
+            background-color: #FFD1DC;
+            padding: 20px;
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #F78FA7;
+            transform: scale(1.05);
+        }
+        .content {
+            margin-left: 270px;
+            padding: 40px;
+            flex: 1;
+        }
+        .header {
+            background: linear-gradient(-45deg, #FFD1DC, #FAD0C4, #FFD1DC, #FAD0C4);
+            background-size: 400% 400%;
+            animation: GradientShift 15s ease infinite;
+            color: #FFFFFF;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 28px;
+            font-family: 'Parisienne', cursive;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background-color: #FFA6C1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: inline-block;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #F78FA7;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        h1, h2, h3 {
+            color: #4A2A4A;
+            margin-bottom: 10px;
+        }
+        ul, li {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        footer {
+            background-color: #FFD1DC;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        canvas {
+            background: #000;
+            display: block;
+            margin: auto;
+        }
+        #score {
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        @keyframes GradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li><a href="firstpage.html">Home</a></li>
+            <li><a href="AboutWebsite.html">Welcome</a></li>
+            <li><a href="AboutMe.html">About Me</a></li>
+            <li><a href="Project.html">Skills & Resume</a></li>
+            <li><a href="ContactMe.html">Contact</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="header">Welcome to Jessa Fayer's Digital Portfolio</div>
+        <div id="welcome" class="section">
+            <h1>Hi, I'm Jessa!</h1>
+            <p>Welcome to my personal website, built from scratch using HTML, CSS, and JavaScript. Explore my works and get to know more about my professional journey and personal interests.</p>
+        </div>
+        <div id="about" class="section">
+            <h2>About Me</h2>
+            <p>I am a creative professional with a passion for design and technology. Here, you'll find a selection of projects that I've worked on, demonstrating my expertise in various aspects of design and digital media.</p>
+            <a href="aboutme.html" class="btn">Visit About Me to Learn More</a>
+        </div>
+        <div id="project" class="section">
+            <h2>Projects</h2>
+            <p>Explore the various technical and creative projects I've undertaken. From AI applications to digital artworks, each project showcases a piece of my professional repertoire.</p>
+            <a href="Project.html" class="btn">View All Projects</a>
+        </div>
+        <div id="contact" class="section">
+            <h2>Contact Me</h2>
+            <p>Interested in collaborating or want to say hi? You're welcome to reach out through any of the platforms listed below or directly through the contact form on this site.</p>
+            <a href="Contactme.html" class="btn">Contact Me</a>
+        </div>
+        <div id="play" class="section">
+            <h2>Play a Game of Pong</h2>
+            <canvas id="pongCanvas" width="800" height="400"></canvas>
+            <div id="score">Score: 0</div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Jessa Fayer</p>
+        <p>Built from scratch using HTML, CSS, and JavaScript</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var canvas = document.getElementById("pongCanvas");
+            var ctx = canvas.getContext("2d");
+            var ballRadius = 10;
+            var x = canvas.width / 2;
+            var y = canvas.height / 2;
+            var dx = 2;
+            var dy = -2;
+            var paddleHeight = 75;
+            var paddleWidth = 10;
+            var leftPaddleY = (canvas.height - paddleHeight) / 2;
+            var rightPaddleY = (canvas.height - paddleHeight) / 2;
+            var upPressed = false;
+            var downPressed = false;
+            var wPressed = false;
+            var sPressed = false;
+            var scoreLeft = 0;
+            var scoreRight = 0;
+
+            document.addEventListener("keydown", keyDownHandler, false);
+            document.addEventListener("keyup", keyUpHandler, false);
+
+            function keyDownHandler(e) {
+                if (e.key == "Up" || e.key == "ArrowUp") {
+                    upPressed = true;
+                } else if (e.key == "Down" || e.key == "ArrowDown") {
+                    downPressed = true;
+                } else if (e.key == "w" || e.key == "W") {
+                    wPressed = true;
+                } else if (e.key == "s" || e.key == "S") {
+                    sPressed = true;
+                }
+            }
+
+            function keyUpHandler(e) {
+                if (e.key == "Up" || e.key == "ArrowUp") {
+                    upPressed = false;
+                } else if (e.key == "Down" || e.key == "ArrowDown") {
+                    downPressed = false;
+                } else if (e.key == "w" || e.key == "W") {
+                    wPressed = false;
+                } else if (e.key == "s" || e.key == "S") {
+                    sPressed = false;
+                }
+            }
+
+            function drawBall() {
+                ctx.beginPath();
+                ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            function drawPaddle(x, y) {
+                ctx.beginPath();
+                ctx.rect(x, y, paddleWidth, paddleHeight);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            function drawScore() {
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "#0095DD";
+                ctx.fillText("Left Player: " + scoreLeft, 8, 20);
+                ctx.fillText("Right Player: " + scoreRight, canvas.width - 120, 20);
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawBall();
+                drawPaddle(0, leftPaddleY);
+                drawPaddle(canvas.width - paddleWidth, rightPaddleY);
+                drawScore();
+
+                if (x + dx > canvas.width - ballRadius) {
+                    if (y > rightPaddleY && y < rightPaddleY + paddleHeight) {
+                        dx = -dx;
+                    } else {
+                        scoreLeft++;
+                        x = canvas.width / 2;
+                        y = canvas.height / 2;
+                        dx = -dx;
+                    }
+                } else if (x - dx < ballRadius) {
+                    if (y > leftPaddleY && y < leftPaddleY + paddleHeight) {
+                        dx = -dx;
+                    } else {
+                        scoreRight++;
+                        x = canvas.width / 2;
+                        y = canvas.height / 2;
+                        dx = -dx;
+                    }
+                }
+
+                if (y + dy > canvas.height - ballRadius || y - dy < ballRadius) {
+                    dy = -dy;
+                }
+
+                if (upPressed && rightPaddleY > 0) {
+                    rightPaddleY -= 7;
+                } else if (downPressed && rightPaddleY < canvas.height - paddleHeight) {
+                    rightPaddleY += 7;
+                }
+
+                if (wPressed && leftPaddleY > 0) {
+                    leftPaddleY -= 7;
+                } else if (sPressed && leftPaddleY < canvas.height - paddleHeight) {
+                    leftPaddleY += 7;
+                }
+
+                x += dx;
+                y += dy;
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        });
+    </script>
+</body>
+</html>
